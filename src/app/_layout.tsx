@@ -1,18 +1,38 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useColorScheme } from 'react-native';
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
+import { Drawer } from 'expo-router/drawer';
+import { ThemeProvider, useTheme } from '../theme/ThemeContext';
 
-SplashScreen.preventAutoHideAsync();
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+export default function RootLayout() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <AppTabs />
+    <ThemeProvider>
+      <AppDrawer />
     </ThemeProvider>
+  );
+}
+
+function AppDrawer() {
+  const { colors } = useTheme();
+
+  return (
+    <Drawer
+      screenOptions={{
+        headerStyle: { backgroundColor: colors.background },
+        headerTintColor: colors.text,
+        sceneStyle: { backgroundColor: colors.background },
+      }}
+    >
+      <Drawer.Screen
+        name="index"
+        options={{ title: 'Game' }}
+      />
+      <Drawer.Screen
+        name="settings"
+        options={{ title: 'Settings' }}
+      />
+      <Drawer.Screen
+        name="about"
+        options={{ title: 'About' }}
+      />
+    </Drawer>
   );
 }
